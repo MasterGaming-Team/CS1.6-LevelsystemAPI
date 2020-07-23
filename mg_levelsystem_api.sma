@@ -190,11 +190,22 @@ userAddLevel(id, accountId)
 
 checkUserLevel(id)
 {
-    // Még kikéne találni a szintlépés rendszerét
-    while(gUserExp[id] >= getUserNeededExp)
+    new lNeededExp
+
+    while(gUserExp[id] >= (lNeededExp = getUserNeededExp(id)))
     {
-        
+        userLevelUp(id, gUserExp[id] - lNeededExp)
     }
+}
+
+getUserNeededExp(id)
+{
+    return getLevelNeededExp(gUserLevel[id]+1)
+}
+
+getLevelNeededExp(level)
+{
+    return (15*level*(1+level))-(12*(level-1)*level)
 }
 
 userLevelUp(id, extraExp = 0)
