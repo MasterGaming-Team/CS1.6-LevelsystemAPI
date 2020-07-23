@@ -29,7 +29,7 @@ public plugin_natives()
     gSqlLevelTuple = SQL_MakeDbTuple("127.0.0.1", "MG_User", "fKj4zbI0wxwPoFzU", "cs_global")
 
     register_native("mg_level_client_level_get", "native_client_level_get")
-    
+
     register_native("mg_level_client_exp_set", "native_client_exp_set")
     register_native("mg_level_client_exp_get", "native_client_exp_get")
     register_native("mg_level_client_exp_add", "native_client_exp_add")
@@ -102,12 +102,14 @@ public native_client_exp_set(plugin_id, param_num)
     new id = get_param(1)
 
     if(!mg_reg_user_loggedin(id))
-        return
+        return false
     
     new lExp = get_param(2)
     
     gUserExp[id] = lExp
     checkUserLevel(id)
+
+    return true
 }
 
 public native_client_exp_get(plugin_id, param_num)
@@ -194,12 +196,17 @@ userAddLevel(id, accountId)
 
 checkUserLevel(id)
 {
+    if(!gLevelsLoaded[id])
+        return 0
+
     new lNeededExp
 
     while(gUserExp[id] >= (lNeededExp = getUserNeededExp(id)))
     {
         userLevelUp(id, gUserExp[id] - lNeededExp)
     }
+    
+    return gUserLevel[id]
 }
 
 getUserNeededExp(id)
