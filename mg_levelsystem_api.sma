@@ -11,9 +11,15 @@ new bool:gLevelsLoaded[33]
 new gUserLevel[33]
 new gUserExp[33]
 
+new gForwardClientLevelUp
+
+new retValue
+
 public plugin_init()
 {
     register_plugin(PLUGIN, VERSION, AUTHOR)
+
+    gForwardClientLevelUp = CreateMultiForward("mg_fw_client_levelup", ET_CONTINUE, FP_CELL, FP_CELL, FP_CELL)
 }
 
 public plugin_natives()
@@ -185,4 +191,16 @@ userAddLevel(id, accountId)
 checkUserLevel(id)
 {
     // Még kikéne találni a szintlépés rendszerét
+    while(gUserExp[id] >= getUserNeededExp)
+    {
+        
+    }
+}
+
+userLevelUp(id, extraExp = 0)
+{
+    gUserLevel[id]++
+    gUserExp[id] = extraExp
+
+    ExecuteForward(gForwardClientLevelUp, retValue, id, gUserLevel[id], gUserExp[id])
 }
