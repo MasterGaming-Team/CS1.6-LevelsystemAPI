@@ -7,6 +7,8 @@
 #define VERSION "1.0.0"
 #define AUTHOR "Vieni"
 
+#define LEVEL_LIMIT 500
+
 new Handle:gSqlLevelTuple
 
 new bool:gLevelsLoaded[33]
@@ -199,13 +201,16 @@ checkUserLevel(id)
     if(!gLevelsLoaded[id])
         return 0
 
+    if(gUserLevel[id] >= LEVEL_LIMIT)
+        return gUserLevel[id]
+
     new lNeededExp
 
     while(gUserExp[id] >= (lNeededExp = getUserNeededExp(id)))
     {
         userLevelUp(id, gUserExp[id] - lNeededExp)
     }
-    
+
     return gUserLevel[id]
 }
 
@@ -221,6 +226,9 @@ getLevelNeededExp(level)
 
 userLevelUp(id, extraExp = 0)
 {
+    if(gUserLevel[id] >= LEVEL_LIMIT)
+        return
+    
     gUserLevel[id]++
     gUserExp[id] = extraExp
 
