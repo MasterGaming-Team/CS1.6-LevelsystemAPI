@@ -7,6 +7,8 @@
 #define VERSION "1.0.0"
 #define AUTHOR "Vieni"
 
+new Handle:gSqlLevelTuple
+
 new bool:gLevelsLoaded[33]
 new gUserLevel[33]
 new gUserExp[33]
@@ -24,8 +26,10 @@ public plugin_init()
 
 public plugin_natives()
 {
-    register_native("mg_level_client_level_get", "native_client_level_get")
+    gSqlLevelTuple = SQL_MakeDbTuple("127.0.0.1", "MG_User", "fKj4zbI0wxwPoFzU", "cs_global")
 
+    register_native("mg_level_client_level_get", "native_client_level_get")
+    
     register_native("mg_level_client_exp_set", "native_client_exp_set")
     register_native("mg_level_client_exp_get", "native_client_exp_get")
     register_native("mg_level_client_exp_add", "native_client_exp_add")
